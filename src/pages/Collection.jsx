@@ -42,14 +42,18 @@ const Collection = () => {
     if(search && showSearch){
       productsCopy = productsCopy.filter(item=> item.name.toLowerCase().includes(search.toLowerCase()))
     };
-    if (category.length > 0) {
+    if (category.length > 0) { //category- Refers to the array of selected categories.
       console.log("Category Filter:", category);
-      productsCopy = productsCopy.filter(item => category.includes(item.category));
+      productsCopy = productsCopy.filter(item => category.includes(item.category)); //category-selected category
+           // category.includes(item.category) → ["MEN"].includes("MEN") → true.
+           // category.includes(item.category) → ["MEN"].includes("KIDS") → false.
     }
     
     if (subCategory.length > 0) {
       console.log("SubCategory Filter:", subCategory);
-      productsCopy = productsCopy.filter(item => subCategory.includes(item.subCategory));
+      productsCopy = productsCopy.filter(item => subCategory.includes(item.subCategory)); //subCategory-seleted subcategory
+      //subCategory.includes(item.subCategory) → ["Topwear"].includes("Topwear") → true.
+      //subCategory.includes(item.subCategory) → ["Topwear"].includes("Bottomwear") → false.
     }
     setFilterProducts(productsCopy);
   };
@@ -65,23 +69,37 @@ const Collection = () => {
   }, [products]);
 
 
-  // sort products
+  // sort products ITH SWITCH CASE
+  // const sortProducts = (e) => {
+  //   let filterProductCopy = filterProducts.slice();
+  //   switch(sortType){
+  //     case "low-high" :
+  //       setFilterProducts(filterProductCopy.sort((a,b)=>(a.price - b.price)));
+  //       break;
+
+  //     case "high-low" :
+  //       setFilterProducts(filterProductCopy.sort((a,b)=>(b.price - a.price)));
+  //         break;
+
+  //       default:
+  //         applyFilter();
+  //         break;
+  //     }
+  // }
+
   const sortProducts = (e) => {
     let filterProductCopy = filterProducts.slice();
-    switch(sortType){
-      case "low-high" :
-        setFilterProducts(filterProductCopy.sort((a,b)=>(a.price - b.price)));
-        break;
-
-      case "high-low" :
-        setFilterProducts(filterProductCopy.sort((a,b)=>(b.price - a.price)));
-          break;
-
-        default:
-          applyFilter();
-          break;
-      }
+    if(sortType === "low-high"){
+      setFilterProducts(filterProductCopy.sort((a,b)=> (a.price- b.price)))
+    }
+    if(sortType==="high-low"){
+      setFilterProducts(filterProductCopy.sort((a,b)=>(b.price-a.price)))
+    }
+    else{
+      applyFilter()
+    }
   }
+
   useEffect(()=>{
     sortProducts()
   },[sortType]);
