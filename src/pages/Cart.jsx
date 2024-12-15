@@ -1,39 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
-import ProductItems from "../components/ProductItems";
 import Title from "../components/Title";
 import { assets } from "../img/assets";
 import CartTotal from "../components/CartTotal";
+// import { useSelector } from "react-redux";
 
 const Cart = () => {
   const { products, currency, cartsItems, updateQuantity, navigate } =
     useContext(ShopContext);
   const [cartData, setCartData] = useState([]);
-  const { cartItems } = useSelector((state) => state.cart);
-  console.log("cart", cartItems);
-
-  // useEffect(() => {
-  //   const tempData = [];
-  //   for (const items in cartItems) {
-  //     for (const item in cartItems[items]) {
-  //       if (cartItems[items][item] > 0) {
-  //         tempData.push({
-  //           _id: items,
-  //           size: item,
-  //           quantity: cartItems[items][item],
-  //         });
-  //       }
-  //     }
-  //   }
-  //   setCartData(tempData);
-  //   console.log(tempData);
-  // }, [cartItems]);
-
-  useEffect(() => {
-    (() => {
-      console.log("products", products);
-    })();
-  }, [cartItems]);
+  // const { cartItems } = useSelector((state) => state.cart);
+  // console.log("cart", cartItems);
 
   useEffect(() => {
     const tempData = [];
@@ -49,8 +26,31 @@ const Cart = () => {
       }
     }
     setCartData(tempData);
-    console.log("tempData", tempData);
+    console.log(tempData);
   }, [cartsItems]);
+
+  // useEffect(() => {
+  //   (() => {
+  //     console.log("products", products);
+  //   })();
+  // }, [cartItems]);
+
+  // useEffect(() => {
+  //   const tempData = [];
+  //   for (const items in cartsItems) {
+  //     for (const item in cartsItems[items]) {
+  //       if (cartsItems[items][item] > 0) {
+  //         tempData.push({
+  //           _id: items,
+  //           size: item,
+  //           quantity: cartsItems[items][item],
+  //         });
+  //       }
+  //     }
+  //   }
+  //   setCartData(tempData);
+  //   console.log("tempData", tempData);
+  // }, [cartsItems]);
   return (
     <div className="border-t pt-14">
       <div className="text-2xl mb-3">
