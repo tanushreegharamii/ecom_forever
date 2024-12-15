@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { products } from "../img/assets";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 
 export const ShopContext = createContext();
@@ -11,6 +12,7 @@ const ShopContextProvider = (props) =>{
     const[search, setSearch] = useState(''); 
     const [showSearch, setShowSearch] = useState(false);
     const [cartsItems, setCartsItems] = useState({});
+    const navigate = useNavigate();
 
     const addToCart = (itemId, size) => {
 
@@ -36,9 +38,9 @@ const ShopContextProvider = (props) =>{
         setCartsItems(cartData); // saving these cartData in cartItems state
     }
 
-    useEffect(()=>{
-        console.log(cartsItems)
-    }, [cartsItems])
+    // useEffect(()=>{
+    //     console.log(cartsItems)
+    // }, [cartsItems])
 
     // cart items inacreasing function 
     const getCartCount = () =>{
@@ -57,11 +59,35 @@ const ShopContextProvider = (props) =>{
             }
         }
         return totalCount;
+    };
+
+    const updateQuantity = async (itemId, size, quantity) => {
+        let cartData = structuredClone(cartsItems);
+        cartData[itemId][size] = quantity;
+
+        setCartsItems(cartData);
+    };
+
+    const getCartTotalAmount = () => {
+        let totalAmount = 0;
+        for(const items in cartsItems){
+            let itemInfo = products.find((product)=> product._id === items)
+            for(const item in cartsItems[items]){
+                try {
+                    if(cartsItems[items][item] > 0){
+                        totalAmount += itemInfo.price * cartsItems[items][item];
+                    }
+                } catch (error) {
+                    
+                }
+            }
+        }
+        return totalAmount;
     }
 
     //*********// 
     const values = {
-        products, currency, delevery_fee, search,setSearch, showSearch, setShowSearch, cartsItems, addToCart, getCartCount
+        products, currency, delevery_fee, search,setSearch, showSearch, setShowSearch, cartsItems, addToCart, getCartCount, updateQuantity, getCartTotalAmount, navigate
     }
     return (
        <ShopContext.Provider value={values}>
